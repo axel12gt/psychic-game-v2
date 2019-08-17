@@ -1,0 +1,19 @@
+{
+  "name": "psychic-game-v2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "cd psychic-game && npm run start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/axel12gt/psychic-game-v2.git"
+  },
+  "author": "Dameon Brown",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/axel12gt/psychic-game-v2/issues"
+  },
+  "homepage": "https://github.com/axel12gt/psychic-game-v2#readme"
+}

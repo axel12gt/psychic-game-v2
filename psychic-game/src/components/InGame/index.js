@@ -1,9 +1,10 @@
 import React from "react"
+import "./style.css"
 
-function InGame () {
+function InGame (props) {
     return (
         <p>
-            Having fun yet?
+            Having fun yet? | Score: {props.score}
         </p>
     )
 }
