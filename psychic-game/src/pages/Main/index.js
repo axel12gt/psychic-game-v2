@@ -1,6 +1,6 @@
 import React from "react";
-import GetStarted from "../GetStarted";
-import InGame from "../InGame";
+import GetStarted from "../../components/GetStarted";
+import InGame from "../../components/InGame";
 import "./style.css";
 
 const data = require("../../utils/words.json");
@@ -40,21 +40,21 @@ let word2;
 // for displaying letters from underscore to the letter
 let hidden = [];
 
-class Nav extends React.Component {
+class Main extends React.Component {
   state = {
     yikes: true,
     score: 0,
     guesses: 10,
-    choosen: []
+    choosen: [],
+    hiddenWord: [],
+    word
   };
 
   handleInputChange = () => {};
 
   gameReset = () => {
-    this.setState({ guesses: 10 });
     hidden = [];
-    this.setState({ choosen: [] });
-    console.log(this.state.choosen + " | " + hidden);
+    this.setState({ guesses: 10, choosen: [], hiddenWord: [] });
     // maybe optional logic to give the user a choice (LOL) about resetting the game
     this.setState({ yikes: true });
   };
@@ -74,6 +74,7 @@ class Nav extends React.Component {
         }
         hidden.push(" ");
       }
+      this.state.hiddenWord.push(hidden);
     }
     // prevents the first key pushed from being counted
     if (!this.state.yikes) {
@@ -91,6 +92,9 @@ class Nav extends React.Component {
               hidden[i] = e.key;
             }
           }
+          this.setState({ hiddenWord: [] });
+          this.state.hiddenWord.push(hidden);
+          console.log("hiddenWord: " + this.state.hiddenWord);
         } else if (this.state.choosen.includes(e.key)) {
           console.log("Please select another letter");
         } else if (!word.includes(e.key)) {
@@ -102,6 +106,10 @@ class Nav extends React.Component {
           "\nscore: " + this.state.score
         );
         this.handleInputChange();
+        // if choosen array doesn't already have the key it pushes it to the array to prevent duplicates
+        if (!this.state.choosen.includes(e.key)) {
+          this.state.choosen.push(e.key);
+        }
       }
       // runs checks for guesses and "_" everytime to see if they lost or won
       if (this.state.guesses === 0) {
@@ -112,12 +120,7 @@ class Nav extends React.Component {
         this.setState({ score: this.state.score + 1 });
         return this.gameReset();
       }
-      // if choosen array doesn't already have the key it pushes it to the array to prevent duplicates
-      if (!this.state.choosen.includes(e.key)) {
-        this.state.choosen.push(e.key);
-      }
     }
-
     this.setState({ yikes: false });
   };
 
@@ -131,15 +134,37 @@ class Nav extends React.Component {
 
   render() {
     return (
-      <div className="topbar">
-        {this.state.yikes === true ? (
-          <GetStarted />
-        ) : (
-          <InGame score={this.state.score} />
-        )}
+      <div className="App">
+        <div className="topbar">
+          {this.state.yikes === true ? (
+            <GetStarted />
+          ) : (
+            <InGame score={this.state.score} />
+          )}
+        </div>
+        <header className="App-header">
+          <div id="box">
+            {this.state.yikes === true && this.state.score === 0 ? (
+              "Hello"
+            ) : this.state.yikes === true ? (
+              "Press a key to play again"
+            ) : (
+              <div>
+                <h1>Go ahead guess a letter or something</h1>
+                <span id="spacing">{this.state.hiddenWord}</span>
+                <ul>
+                  <li>
+                    choosen letters : <span>{this.state.choosen}</span>
+                  </li>
+                  <li>guesses left : {this.state.guesses}</li>
+                </ul>
+              </div>
+            )}
+          </div>
+        </header>
       </div>
     );
   }
 }
 
-export default Nav;
+export default Main;

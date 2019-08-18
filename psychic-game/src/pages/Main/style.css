@@ -1,0 +1,15 @@
+.topbar{
+    background-color: grey;
+    padding: 0.3rem;
+}
+#box{
+    margin: 10vh;
+    /* padding: 10% 40%;
+    border: 2px solid black; */
+}
+p{
+    margin: 0px;
+}
+#spacing{
+    letter-spacing: 7px
+}
