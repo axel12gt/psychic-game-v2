@@ -47,10 +47,17 @@ class Main extends React.Component {
     guesses: 10,
     choosen: [],
     hiddenWord: [],
-    word
+    word: "",
+    win: true,
   };
 
   handleInputChange = () => {};
+
+  hiddenFunc = hidden => {
+    console.log(hidden);
+    this.setState({ hiddenWord: [] });
+    this.state.hiddenWord.push(hidden);
+  };
 
   gameReset = () => {
     hidden = [];
@@ -66,6 +73,9 @@ class Main extends React.Component {
   keypress = e => {
     if (this.state.yikes) {
       word = this.wordChooser();
+      //resets word to null, I use this.state.word as a check for losing the game if the user doesn't guess the word
+      //so I need to reset at the start of every game. THIS IS DUMB WAY TO DO IT TODO MAKE IT BETTER
+      this.setState({ word: word });
       console.log(word);
       word2 = word.split(" ");
       for (let i = 0; i < word2.length; i++) {
@@ -92,8 +102,7 @@ class Main extends React.Component {
               hidden[i] = e.key;
             }
           }
-          this.setState({ hiddenWord: [] });
-          this.state.hiddenWord.push(hidden);
+          this.hiddenFunc(hidden);
           console.log("hiddenWord: " + this.state.hiddenWord);
         } else if (this.state.choosen.includes(e.key)) {
           console.log("Please select another letter");
@@ -113,7 +122,7 @@ class Main extends React.Component {
       }
       // runs checks for guesses and "_" everytime to see if they lost or won
       if (this.state.guesses === 0) {
-        console.log("you lose");
+        this.setState({win: false})       
         return this.gameReset();
       } else if (!hidden.includes("_")) {
         console.log("you win");
@@ -131,12 +140,16 @@ class Main extends React.Component {
   componentWillUnmount() {
     document.removeEventListener("keydown", this.keypress, false);
   }
+/**
+ * TODO
+ * clear word
+  */
 
   render() {
     return (
       <div className="App">
         <div className="topbar">
-          {this.state.yikes === true ? (
+          {this.state.yikes && this.state.score === 0 ? (
             <GetStarted />
           ) : (
             <InGame score={this.state.score} />
@@ -145,12 +158,40 @@ class Main extends React.Component {
         <header className="App-header">
           <div id="box">
             {this.state.yikes === true && this.state.score === 0 ? (
-              "Hello"
+              <div>
+                <p>Press a key to play</p>
+                {!this.state.win ? (
+                  <div>
+                    <p>
+                      The correct word was <br /> {this.state.word}
+                    </p>
+                  </div>
+                ) : (
+                  this.state.word ?
+                  <div>
+                    <p>You won <br /> {this.state.word} </p>
+                  </div> : <div />
+                )}
+              </div>
             ) : this.state.yikes === true ? (
-              "Press a key to play again"
+              <div>
+                <p>Press a key to play again</p>
+                {!this.state.win ? (
+                  <div>
+                    <p>
+                      The correct word was <br /> {this.state.word}
+                    </p>
+                  </div>
+                ) : (
+                  <div>
+                    <p>You won <br /> {this.state.word} </p>
+                  </div>
+                )}
+              </div>
             ) : (
               <div>
-                <h1>Go ahead guess a letter or something</h1>
+                <span>Go ahead guess a letter or something</span>
+                <br />
                 <span id="spacing">{this.state.hiddenWord}</span>
                 <ul>
                   <li>

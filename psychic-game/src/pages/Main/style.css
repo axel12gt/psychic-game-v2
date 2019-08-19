@@ -13,3 +13,6 @@ p{
 #spacing{
     letter-spacing: 7px
 }
+ul{
+    list-style-type: none;
+}

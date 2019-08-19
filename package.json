@@ -15,5 +15,7 @@
   "bugs": {
     "url": "https://github.com/axel12gt/psychic-game-v2/issues"
   },
-  "homepage": "https://github.com/axel12gt/psychic-game-v2#readme"
+  "homepage": "https://github.com/axel12gt/psychic-game-v2#readme",
+  "dependencies": {
+  }
 }
